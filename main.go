@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -10,15 +9,19 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 )
 
-func main() {
-	fmt.Println("Server is starting.......")
+func homePage(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "welcome to the Homepage!")
+	fmt.Println("endpoint hit: homepage")
+}
 
-	r := chi.NewRouter()
-	r.Use(middleware.Logger)
-	r.Get("/hello-world", getHandler)
-	r.Get("/api/auth", userAuth)
-	fmt.Println("Server is listening on port 10000...")
-	log.Fatal(http.ListenAndServe(":10000", r))
+func handleRequests() {
+	http.HandleFunc("/", homePage)
+	log.Fatal(http.ListenAndServe(":10000", nil))
+}
+
+func main() {
+	fmt.Println("The server is On")
+	handleRequests()
 
 }
 
